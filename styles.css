@@ -808,16 +808,26 @@ body {
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
+    .logo-img{
+        height: 70px;
+        margin-left: 10px;
+    }
+    
+    .nav{
+        padding: 0.7rem;
+    }
+
     .hamburger {
         display: flex;
+        margin-right: 10px;
     }
     
     .nav-menu {
         position: fixed;
         left: -100%;
-        top: 70px;
+        top: 90px;
         flex-direction: column;
-        background-color: rgba(139, 69, 19, 0.98);
+        background-color: #f4f4f4;
         width: 100%;
         text-align: center;
         transition: 0.3s;
@@ -885,11 +895,6 @@ body {
         grid-template-columns: 1fr;
     }
     
-    .feature {
-        flex-direction: column;
-        text-align: center;
-    }
-    
     /* About Section Responsive */
     .mission-vision-grid {
         grid-template-columns: 1fr;
@@ -918,10 +923,6 @@ body {
 }
 
 @media screen and (max-width: 480px) {
-    .nav {
-        padding: 1rem;
-    }
-    
     .hero-content {
         padding: 1rem;
     }
