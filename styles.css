@@ -329,12 +329,40 @@ body {
     gap: 2rem;
 }
 
-/* Products slider for mobile */
+/* Mobile/Desktop view toggle */
+.desktop-view {
+    display: block;
+}
+
+.mobile-view {
+    display: none;
+}
+
 @media (max-width: 768px) {
-    .products-grid {
-        display: flex;
-        gap: 1.5rem;
-        overflow-x: hidden;
+    .desktop-view {
+        display: none;
+    }
+
+    .mobile-view {
+        display: block;
+    }
+
+    .products-mobile-swiper {
+        padding-bottom: 40px;
+    }
+
+    .products-mobile-swiper .swiper-pagination {
+        bottom: 10px;
+    }
+
+    .products-mobile-swiper .swiper-pagination-bullet {
+        background: var(--primary-cyan);
+        opacity: 0.5;
+    }
+
+    .products-mobile-swiper .swiper-pagination-bullet-active {
+        opacity: 1;
+        background: var(--primary-green);
     }
 }
 
