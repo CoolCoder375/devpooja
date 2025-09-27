@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="DevPooja Products - Browse our complete collection of Hindu worship essentials, incense, garlands, diyas and more.">
     <title>All Products | The Devpooja</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,13 +15,15 @@
     <header class="header">
         <nav class="nav">
             <div class="nav-logo">
-                <img src="images/logo.JPG" alt="The Devpooja" class="logo-img">
+                <a href="../index.html">
+                    <img src="../images/logo.JPG" alt="The Devpooja" class="logo-img">
+                </a>
             </div>
             <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="../index.html" class="nav-link">Home</a></li>
                 <li><a href="products.html" class="nav-link active">Products</a></li>
-                <li><a href="index.html#about" class="nav-link">About</a></li>
-                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
             </ul>
             <div class="hamburger">
                 <span class="bar"></span>
@@ -70,16 +72,16 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <img src="images/logo.JPG" alt="The Devpooja" class="footer-logo">
+                    <img src="../images/logo.JPG" alt="The Devpooja" class="footer-logo">
                     <p>Your trusted source for authentic Hindu worship essentials. Bringing devotion to your doorstep.</p>
                 </div>
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="../index.html">Home</a></li>
                         <li><a href="products.html">Products</a></li>
-                        <li><a href="index.html#about">About Us</a></li>
-                        <li><a href="index.html#contact">Contact</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -107,13 +109,13 @@
         </div>
     </footer>
 
-    <script src="js/products.js"></script>
+    <script src="../js/products.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('productsLoaded', function() {
             const productsContainer = document.getElementById('all-products');
             const filterButtons = document.querySelectorAll('.filter-btn');
             const resultsCount = document.getElementById('results-count');
-            
+
             // Load all products initially
             loadProducts('all');
             
