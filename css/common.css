@@ -155,7 +155,6 @@ body {
 .btn-secondary {
     background: transparent;
     color: var(--bg-cream);
-    border: 2px solid var(--primary-cyan);
 }
 
 .btn-secondary:hover {
