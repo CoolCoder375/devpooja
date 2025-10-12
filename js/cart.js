@@ -78,10 +78,14 @@ class ShoppingCart {
 
     // Create cart HTML structure
     createCartHTML() {
+        // Determine correct path based on current page location
+        const isInSubfolder = window.location.pathname.includes('/pages/');
+        const svgPath = isInSubfolder ? '../svg/cart.svg' : 'svg/cart.svg';
+
         const cartHTML = `
             <!-- Floating Cart Button -->
             <button class="cart-float-btn" id="cartFloatBtn">
-                🛒
+                <img src="${svgPath}" alt="Cart" class="cart-icon">
                 <span class="cart-badge" id="cartBadge">0</span>
             </button>
 

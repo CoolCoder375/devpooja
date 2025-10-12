@@ -11,7 +11,6 @@
     color: white;
     border: none;
     border-radius: 50%;
-    font-size: 1.8rem;
     cursor: pointer;
     box-shadow: 0 8px 25px rgba(0, 188, 212, 0.4);
     z-index: 999;
@@ -19,6 +18,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.cart-icon {
+    width: 28px;
+    height: 28px;
+    filter: brightness(0) invert(1);
 }
 
 .cart-float-btn:hover {
