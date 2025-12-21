@@ -7,7 +7,8 @@
       "price": 199,
       "image": "https://via.placeholder.com/400x400/00bcd4/ffffff?text=Sandalwood+Incense",
       "description": "Premium sandalwood incense sticks - Pack of 100. Made from pure sandalwood for authentic fragrance.",
-      "features": ["100% Natural", "Long burning", "Authentic fragrance", "Export quality"]
+      "features": ["100% Natural", "Long burning", "Authentic fragrance", "Export quality"],
+      "quantity": 100
     },
     {
       "id": 2,
@@ -16,7 +17,8 @@
       "price": 150,
       "image": "https://via.placeholder.com/400x400/4caf50/ffffff?text=Marigold+Garland",
       "description": "Fresh marigold flower garland - 2 meters. Perfect for temple decoration and festivals.",
-      "features": ["Fresh flowers", "2 meter length", "Traditional design", "Daily fresh supply"]
+      "features": ["Fresh flowers", "2 meter length", "Traditional design", "Daily fresh supply"],
+      "quantity": 75
     },
     {
       "id": 3,
@@ -25,7 +27,8 @@
       "price": 899,
       "image": "https://via.placeholder.com/400x400/00bcd4/ffffff?text=Ganesha+Idol",
       "description": "Handcrafted brass Ganesha statue - 6 inches. Perfect for home temple and worship.",
-      "features": ["Handcrafted brass", "6 inch height", "Traditional design", "Export finish"]
+      "features": ["Handcrafted brass", "6 inch height", "Traditional design", "Export finish"],
+      "quantity": 50
     },
     {
       "id": 4,
@@ -34,7 +37,8 @@
       "price": 299,
       "image": "https://via.placeholder.com/400x400/4caf50/ffffff?text=Brass+Diyas",
       "description": "Traditional brass oil lamps - Set of 5. Perfect for festivals and daily worship.",
-      "features": ["Set of 5 diyas", "Pure brass", "Traditional design", "Festival ready"]
+      "features": ["Set of 5 diyas", "Pure brass", "Traditional design", "Festival ready"],
+      "quantity": 80
     },
     {
       "id": 5,
@@ -43,7 +47,8 @@
       "price": 599,
       "image": "https://via.placeholder.com/400x400/00bcd4/ffffff?text=Pooja+Thali",
       "description": "Complete brass pooja thali with all accessories included for worship rituals.",
-      "features": ["Complete set", "Brass material", "All accessories", "Ready to use"]
+      "features": ["Complete set", "Brass material", "All accessories", "Ready to use"],
+      "quantity": 60
     },
     {
       "id": 6,
@@ -52,7 +57,8 @@
       "price": 120,
       "image": "https://via.placeholder.com/400x400/4caf50/ffffff?text=Premium+Coconuts",
       "description": "Premium quality coconuts for religious ceremonies - Set of 3 pieces.",
-      "features": ["Premium quality", "Set of 3", "Fresh supply", "Ceremony ready"]
+      "features": ["Premium quality", "Set of 3", "Fresh supply", "Ceremony ready"],
+      "quantity": 120
     }
   ],
   "categories": {
