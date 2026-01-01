@@ -138,8 +138,26 @@ class Checkout {
         if (this.selectedPaymentMethod === 'razorpay') {
             this.processRazorpayPayment();
         } else {
-            this.processCODOrder();
+            await this.processCODOrder();
         }
+    }
+
+    // Show button loading state
+    showButtonLoading(text = 'Processing...') {
+        const btn = document.getElementById('placeOrderBtn');
+        const btnText = btn.querySelector('.btn-text');
+        btn.classList.add('loading');
+        btn.disabled = true;
+        btnText.textContent = text;
+    }
+
+    // Hide button loading state
+    hideButtonLoading(text = 'Place Order') {
+        const btn = document.getElementById('placeOrderBtn');
+        const btnText = btn.querySelector('.btn-text');
+        btn.classList.remove('loading');
+        btn.disabled = false;
+        btnText.textContent = text;
     }
 
     // Process Razorpay payment
@@ -148,6 +166,9 @@ class Checkout {
             alert('Payment gateway is not loaded. Please refresh and try again.');
             return;
         }
+
+        // Show loading while opening payment modal
+        this.showButtonLoading('Opening payment gateway...');
 
         const total = this.getCartTotal();
         const config = RAZORPAY_CONFIG;
@@ -184,12 +205,15 @@ class Checkout {
             },
 
             handler: (response) => {
-                // Payment successful
+                // Payment successful - keep loading while processing
+                this.showButtonLoading('Processing payment...');
                 this.handlePaymentSuccess(response.razorpay_payment_id);
             },
 
             modal: {
                 ondismiss: () => {
+                    // Hide loading when modal is dismissed
+                    this.hideButtonLoading();
                     console.log('Payment cancelled by user');
                 }
             }
@@ -198,6 +222,8 @@ class Checkout {
         const rzp = new Razorpay(options);
 
         rzp.on('payment.failed', (response) => {
+            // Hide loading on payment failure
+            this.hideButtonLoading();
             alert('Payment failed: ' + response.error.description + '\nPlease try again or choose Cash on Delivery.');
         });
 
@@ -206,20 +232,35 @@ class Checkout {
 
     // Process COD order
     async processCODOrder() {
-        // Create order object
-        const order = this.createOrderObject(null);
+        try {
+            // Show loading
+            this.showButtonLoading('Placing order...');
 
-        // Save order to Google Sheets (if Apps Script is configured)
-        await this.saveOrderToSheets(order);
+            // Create order object
+            const order = this.createOrderObject(null);
 
-        // Send WhatsApp message
-        this.sendWhatsAppNotification(order);
+            // Save order to Google Sheets (if Apps Script is configured)
+            this.showButtonLoading('Saving order...');
+            await this.saveOrderToSheets(order);
 
-        // Show success message
-        this.showOrderSuccess(order);
+            // Send WhatsApp message
+            this.showButtonLoading('Opening WhatsApp...');
+            this.sendWhatsAppNotification(order);
 
-        // Clear cart
-        localStorage.removeItem('devpooja_cart');
+            // Show success message
+            this.showOrderSuccess(order);
+
+            // Clear cart
+            localStorage.removeItem('devpooja_cart');
+
+            // Hide loading (success modal will handle navigation)
+            this.hideButtonLoading('Order Placed!');
+
+        } catch (error) {
+            console.error('Error placing order:', error);
+            this.hideButtonLoading();
+            alert('Failed to place order. Please try again.');
+        }
     }
 
     // Handle payment success

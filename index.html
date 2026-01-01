@@ -93,6 +93,8 @@
                             </div>
                         </div>
                     </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
                     <div class="swiper-pagination"></div>
                 </div>
             </div>
@@ -105,6 +107,8 @@
                     <div class="swiper-wrapper" id="featured-products">
                         <!-- Products will be loaded dynamically by JavaScript -->
                     </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
                     <div class="swiper-pagination"></div>
                 </div>
             </div>
@@ -414,6 +418,10 @@
             const categoriesSwiper = new Swiper('.categories-swiper', {
                 slidesPerView: 1,
                 spaceBetween: 20,
+                navigation: {
+                    nextEl: '.categories-swiper .swiper-button-next',
+                    prevEl: '.categories-swiper .swiper-button-prev',
+                },
                 pagination: {
                     el: '.categories-swiper .swiper-pagination',
                     clickable: true,
@@ -434,6 +442,10 @@
             const productsSwiper = new Swiper('.products-swiper', {
                 slidesPerView: 1,
                 spaceBetween: 20,
+                navigation: {
+                    nextEl: '.products-swiper .swiper-button-next',
+                    prevEl: '.products-swiper .swiper-button-prev',
+                },
                 pagination: {
                     el: '.products-swiper .swiper-pagination',
                     clickable: true,

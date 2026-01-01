@@ -196,6 +196,40 @@
     font-weight: 700;
     border-radius: 12px;
     margin-top: 8px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.btn-place-order:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-place-order.loading {
+    padding-right: 60px;
+}
+
+.btn-place-order .btn-spinner {
+    display: none;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 3px solid #ffffff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+.btn-place-order.loading .btn-spinner {
+    display: block;
+}
+
+@keyframes spin {
+    0% { transform: translateY(-50%) rotate(0deg); }
+    100% { transform: translateY(-50%) rotate(360deg); }
 }
 
 /* Order Summary */

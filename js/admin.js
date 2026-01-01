@@ -18,6 +18,7 @@ let currentProducts = [];
 let currentCustomers = [];
 let currentOrders = [];
 let editingProductId = null;
+let ordersLoaded = false;
 
 // ==========================================
 // LOGIN / LOGOUT
@@ -78,7 +79,7 @@ function switchTab(tabName) {
 // DASHBOARD
 // ==========================================
 
-function loadDashboard() {
+async function loadDashboard() {
     // Wait for products to load from Google Sheets
     if (typeof products === 'undefined' || products.length === 0) {
         setTimeout(loadDashboard, 500);
@@ -87,11 +88,22 @@ function loadDashboard() {
 
     currentProducts = products;
 
+    // Load orders if not already loaded
+    if (!ordersLoaded) {
+        currentOrders = await fetchOrdersFromSheets();
+        ordersLoaded = true;
+    }
+
     // Update statistics
     document.getElementById('totalProducts').textContent = currentProducts.length;
     document.getElementById('totalCustomers').textContent = currentCustomers.length;
     document.getElementById('totalOrders').textContent = currentOrders.length;
-    document.getElementById('pendingOrders').textContent = currentOrders.filter(o => o.status === 'pending').length;
+
+    // Count pending orders (status = "Pending" or "pending")
+    const pendingCount = currentOrders.filter(o =>
+        o.status.toLowerCase() === 'pending'
+    ).length;
+    document.getElementById('pendingOrders').textContent = pendingCount;
 
     loadRecentOrders();
 }
@@ -108,23 +120,46 @@ function loadRecentOrders() {
             </div>
         `;
     } else {
-        // TODO: Show recent 5 orders in a table
+        // Show recent 5 orders in a table
         const recentOrders = currentOrders.slice(0, 5);
-        let html = '<table class="data-table"><thead><tr><th>Order ID</th><th>Customer</th><th>Date</th><th>Total</th><th>Status</th></tr></thead><tbody>';
+        let html = `
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
 
         recentOrders.forEach(order => {
+            const date = new Date(order.date);
+            const formattedDate = date.toLocaleDateString('en-IN', {
+                day: '2-digit',
+                month: 'short'
+            });
+
+            const statusClass = order.status.toLowerCase() === 'paid' ? 'paid' : 'pending';
+
             html += `
                 <tr>
-                    <td>#${order.id}</td>
+                    <td><strong>${order.id}</strong></td>
                     <td>${order.customerName}</td>
-                    <td>${order.date}</td>
-                    <td>₹${order.total}</td>
-                    <td><span class="badge badge-${order.status}">${order.status}</span></td>
+                    <td>${formattedDate}</td>
+                    <td><strong>₹${order.total}</strong></td>
+                    <td><span class="status-badge status-${statusClass}">${order.status}</span></td>
                 </tr>
             `;
         });
 
-        html += '</tbody></table>';
+        html += `
+                </tbody>
+            </table>
+        `;
         container.innerHTML = html;
     }
 }
@@ -204,7 +239,15 @@ async function uploadImageToImgBB(file) {
 async function saveProduct(event) {
     event.preventDefault();
 
+    const saveBtn = document.getElementById('saveProductBtn');
+    const btnText = saveBtn.querySelector('.btn-text');
+
     try {
+        // Show loader and disable button
+        saveBtn.classList.add('loading');
+        saveBtn.disabled = true;
+        btnText.textContent = 'Saving...';
+
         const name = document.getElementById('productName').value;
         const category = document.getElementById('productCategory').value;
         const price = parseFloat(document.getElementById('productPrice').value);
@@ -218,12 +261,23 @@ async function saveProduct(event) {
         // Upload new image if selected
         const imageFile = document.getElementById('productImage').files[0];
         if (imageFile) {
+            btnText.textContent = 'Uploading image...';
             imageUrl = await uploadImageToImgBB(imageFile);
-            if (!imageUrl) return; // Upload failed
+            if (!imageUrl) {
+                // Reset button on upload failure
+                saveBtn.classList.remove('loading');
+                saveBtn.disabled = false;
+                btnText.textContent = 'Save Product';
+                return;
+            }
         }
 
         if (!imageUrl) {
             alert('Please upload a product image');
+            // Reset button
+            saveBtn.classList.remove('loading');
+            saveBtn.disabled = false;
+            btnText.textContent = 'Save Product';
             return;
         }
 
@@ -238,27 +292,37 @@ async function saveProduct(event) {
             image: imageUrl
         };
 
+        btnText.textContent = 'Saving to Google Sheets...';
+
         // Save to Google Sheets via Apps Script
         if (editingProductId) {
             // Update existing product
             await postToAppsScript('update', productData, editingProductId);
-            showSuccessMessage('Product updated successfully!');
+            showSuccessMessage('Product updated successfully! Reloading...');
         } else {
             // Add new product
             await postToAppsScript('add', productData);
-            showSuccessMessage('Product added successfully!');
+            showSuccessMessage('Product added successfully! Reloading...');
         }
 
         hideProductForm();
 
-        // Reload products after a short delay to allow Sheets to update
+        // Clear cache and reload page to fetch fresh data
+        localStorage.removeItem('devpooja_products_cache');
+
+        // Reload page after 1.5 seconds to show success message and allow Sheets to update
         setTimeout(() => {
-            loadProducts();
-        }, 1000);
+            window.location.reload();
+        }, 1500);
 
     } catch (error) {
         console.error('Save product error:', error);
         showErrorMessage(error.message);
+
+        // Reset button on error
+        saveBtn.classList.remove('loading');
+        saveBtn.disabled = false;
+        btnText.textContent = 'Save Product';
     }
 }
 
@@ -359,12 +423,15 @@ async function deleteProduct(id) {
         // Delete from Google Sheets via Apps Script
         await postToAppsScript('delete', null, id);
 
-        showSuccessMessage('Product deleted successfully!');
+        showSuccessMessage('Product deleted successfully! Reloading...');
 
-        // Reload products after a short delay
+        // Clear cache and reload page to fetch fresh data
+        localStorage.removeItem('devpooja_products_cache');
+
+        // Reload page after 1.5 seconds to show success message and allow Sheets to update
         setTimeout(() => {
-            loadProducts();
-        }, 1000);
+            window.location.reload();
+        }, 1500);
 
     } catch (error) {
         console.error('Delete product error:', error);
@@ -413,10 +480,21 @@ function loadCustomers() {
 // ORDER MANAGEMENT
 // ==========================================
 
-function loadOrders() {
+async function loadOrders() {
     const container = document.getElementById('ordersTable');
 
-    // TODO: Load from Google Sheets "Orders" tab
+    // Show loading
+    container.innerHTML = `
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Loading orders from Google Sheets...</p>
+        </div>
+    `;
+
+    // Fetch orders from Google Sheets
+    currentOrders = await fetchOrdersFromSheets();
+    ordersLoaded = true;
+
     if (currentOrders.length === 0) {
         container.innerHTML = `
             <div class="empty-state">
@@ -425,36 +503,170 @@ function loadOrders() {
                 <p style="color: #999; font-size: 14px; margin-top: 10px;">Orders will appear here when customers place orders</p>
             </div>
         `;
-    } else {
-        // Show orders table
-        let html = '<table class="data-table"><thead><tr><th>Order ID</th><th>Customer</th><th>Date</th><th>Items</th><th>Total</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
+        return;
+    }
 
-        currentOrders.forEach(order => {
-            html += `
+    // Show orders table
+    let html = `
+        <table class="data-table">
+            <thead>
                 <tr>
-                    <td>#${order.id}</td>
-                    <td>${order.customerName}</td>
-                    <td>${order.date}</td>
-                    <td>${order.itemCount}</td>
-                    <td>₹${order.total}</td>
-                    <td><span class="badge badge-${order.status}">${order.status}</span></td>
-                    <td>
-                        <div class="action-buttons">
-                            <button class="btn-view" onclick="viewOrder(${order.id})">View</button>
-                        </div>
-                    </td>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Customer</th>
+                    <th>Phone</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Payment</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </tr>
-            `;
+            </thead>
+            <tbody>
+    `;
+
+    currentOrders.forEach((order, index) => {
+        // Format date nicely
+        const date = new Date(order.date);
+        const formattedDate = date.toLocaleDateString('en-IN', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric'
         });
 
-        html += '</tbody></table>';
-        container.innerHTML = html;
-    }
+        // Determine status badge color
+        const statusClass = order.status.toLowerCase() === 'paid' ? 'paid' : 'pending';
+
+        html += `
+            <tr>
+                <td><strong>${order.id}</strong></td>
+                <td>${formattedDate}</td>
+                <td>${order.customerName}</td>
+                <td>${order.phone}</td>
+                <td>${order.itemCount} item${order.itemCount > 1 ? 's' : ''}</td>
+                <td><strong>₹${order.total}</strong></td>
+                <td>${order.paymentMethod}</td>
+                <td><span class="status-badge status-${statusClass}">${order.status}</span></td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="btn-view" onclick="viewOrder(${index})">View</button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+
+    html += `
+            </tbody>
+        </table>
+    `;
+
+    container.innerHTML = html;
 }
 
-function viewOrder(id) {
-    // TODO: Show order details modal
-    alert('Order details for #' + id);
+function viewOrder(index) {
+    const order = currentOrders[index];
+    if (!order) return;
+
+    // Create modal HTML
+    const modalHtml = `
+        <div class="order-modal-overlay" onclick="closeOrderModal()">
+            <div class="order-modal" onclick="event.stopPropagation()">
+                <div class="order-modal-header">
+                    <h2>Order Details</h2>
+                    <button class="modal-close" onclick="closeOrderModal()">&times;</button>
+                </div>
+
+                <div class="order-modal-content">
+                    <div class="order-info-section">
+                        <h3>Order Information</h3>
+                        <div class="order-info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Order ID:</span>
+                                <span class="info-value"><strong>${order.id}</strong></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Date:</span>
+                                <span class="info-value">${new Date(order.date).toLocaleString('en-IN')}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Status:</span>
+                                <span class="info-value"><span class="status-badge status-${order.status.toLowerCase() === 'paid' ? 'paid' : 'pending'}">${order.status}</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-info-section">
+                        <h3>Customer Details</h3>
+                        <div class="order-info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Name:</span>
+                                <span class="info-value">${order.customerName}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Phone:</span>
+                                <span class="info-value"><a href="tel:${order.phone}">${order.phone}</a></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Email:</span>
+                                <span class="info-value">${order.email || 'Not provided'}</span>
+                            </div>
+                            <div class="info-item full-width">
+                                <span class="info-label">Delivery Address:</span>
+                                <span class="info-value">${order.address}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-info-section">
+                        <h3>Order Items</h3>
+                        <div class="order-items-list">
+                            ${order.itemsArray.map(item => `<div class="order-item">📦 ${item}</div>`).join('')}
+                        </div>
+                    </div>
+
+                    <div class="order-info-section">
+                        <h3>Payment Details</h3>
+                        <div class="order-info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Payment Method:</span>
+                                <span class="info-value">${order.paymentMethod}</span>
+                            </div>
+                            ${order.paymentId ? `
+                                <div class="info-item">
+                                    <span class="info-label">Payment ID:</span>
+                                    <span class="info-value"><code>${order.paymentId}</code></span>
+                                </div>
+                            ` : ''}
+                            <div class="info-item">
+                                <span class="info-label">Total Amount:</span>
+                                <span class="info-value"><strong style="font-size: 18px; color: #667eea;">₹${order.total}</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-modal-footer">
+                    <button class="btn-cancel" onclick="closeOrderModal()">Close</button>
+                    <a href="https://wa.me/${RAZORPAY_CONFIG?.whatsappNumber || '919067615208'}?text=Regarding order ${order.id}"
+                       target="_blank"
+                       class="btn-save">
+                        Contact Customer via WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Add modal to page
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
+function closeOrderModal() {
+    const modal = document.querySelector('.order-modal-overlay');
+    if (modal) {
+        modal.remove();
+    }
 }
 
 // ==========================================
@@ -534,6 +746,63 @@ async function postToAppsScript(action, data, id = null) {
         hideLoading();
         console.error('Apps Script error:', error);
         throw new Error('Failed to save to Google Sheets: ' + error.message);
+    }
+}
+
+// ==========================================
+// FETCH ORDERS FROM GOOGLE SHEETS
+// ==========================================
+
+/**
+ * Fetch orders from Google Sheets "Orders" tab
+ * Uses the same Google Sheets API as products
+ */
+async function fetchOrdersFromSheets() {
+    if (typeof SHEETS_CONFIG === 'undefined' || !SHEETS_CONFIG.apiKey || !SHEETS_CONFIG.spreadsheetId) {
+        console.error('Google Sheets config not found');
+        return [];
+    }
+
+    try {
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEETS_CONFIG.spreadsheetId}/values/Orders!A2:K?key=${SHEETS_CONFIG.apiKey}`;
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (!data.values || data.values.length === 0) {
+            console.log('No orders found in sheet');
+            return [];
+        }
+
+        // Transform sheet data into order objects
+        const orders = data.values.map((row, index) => {
+            // Parse items string (format: "Product (2x₹299) | Product2 (1x₹499)")
+            const itemsStr = row[6] || '';
+            const itemsArray = itemsStr.split('|').map(item => item.trim()).filter(item => item);
+
+            return {
+                id: row[0] || '',                    // Order ID
+                date: row[1] || '',                  // Date
+                customerName: row[2] || '',          // Customer Name
+                phone: row[3] || '',                 // Phone
+                email: row[4] || '',                 // Email
+                address: row[5] || '',               // Address
+                items: itemsStr,                     // Items string
+                itemsArray: itemsArray,              // Items as array
+                itemCount: itemsArray.length,        // Number of items
+                total: parseFloat(row[7]) || 0,      // Total
+                paymentMethod: row[8] || '',         // Payment Method
+                paymentId: row[9] || '',             // Payment ID
+                status: row[10] || 'Pending'         // Status
+            };
+        });
+
+        console.log(`Loaded ${orders.length} orders from Google Sheets`);
+        return orders;
+
+    } catch (error) {
+        console.error('Error fetching orders:', error);
+        return [];
     }
 }
 
