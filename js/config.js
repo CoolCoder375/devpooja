@@ -18,7 +18,7 @@ const SHEETS_CONFIG = {
     // Apps Script Web App URL (for writing products from admin panel)
     // IMPORTANT: Deploy your Apps Script first, then paste the URL here
     // See docs/GOOGLE_SHEETS_APPS_SCRIPT.md for setup instructions
-    appsScriptUrl: 'https://script.google.com/macros/s/AKfycbzy-c5y2lO1w-88kkuHSpUXegXDLLPTrG0rfP2ec6LtSKTkRdoj3SfYHuLZrdP8FtOu/exec'  // Example: 'https://script.google.com/macros/s/AKfycby.../exec'
+    appsScriptUrl: 'https://script.google.com/macros/s/AKfycbzMQfNcBsOgLp4N4BP1NO7VpzaOf_7Skiv1vzN6MoY-NscT4SI9Ahr7ys_4yDU3fhLh/exec'  // Example: 'https://script.google.com/macros/s/AKfycby.../exec'
 };
 
 // Razorpay Configuration

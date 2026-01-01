@@ -22,36 +22,48 @@ const COLUMNS = {
  * Main entry point for POST requests from admin panel
  */
 function doPost(e) {
+  console.log('=== doPost STARTED ===');
+  console.log('Time:', new Date().toISOString());
+
   try {
     // Parse request body
     const requestData = JSON.parse(e.postData.contents);
     const action = requestData.action;
 
-    Logger.log('Received request - Action: ' + action);
+    console.log('Action:', action);
+    console.log('Has data?', requestData.data ? 'YES' : 'NO');
 
     // Route to appropriate handler
     let result;
     switch(action) {
       case 'add':
+        console.log('→ Calling addProduct...');
         result = addProduct(requestData.data);
         break;
       case 'update':
+        console.log('→ Calling updateProduct...');
         result = updateProduct(requestData.id, requestData.data);
         break;
       case 'delete':
+        console.log('→ Calling deleteProduct...');
         result = deleteProduct(requestData.id);
         break;
       case 'addOrder':
+        console.log('→ Calling addOrder...');
         result = addOrder(requestData.data);
         break;
       default:
+        console.error('❌ Invalid action:', action);
         return createResponse(false, 'Invalid action: ' + action);
     }
 
+    console.log('✅ doPost SUCCESS');
     return createResponse(true, result);
 
   } catch (error) {
-    Logger.log('Error: ' + error.toString());
+    console.error('❌ doPost ERROR');
+    console.error('Error:', error.toString());
+    console.error('Stack:', error.stack);
     return createResponse(false, 'Error: ' + error.toString());
   }
 }
@@ -250,58 +262,88 @@ function notifyClientsToRefresh() {
 }
 
 /**
- * Add a new order to the Orders sheet
+ * Add a new order to the Orders sheet (Enhanced with detailed logging)
  */
 function addOrder(orderData) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = ss.getSheetByName('Orders');
-  
-  // Create Orders sheet if it doesn't exist
-  if (!sheet) {
-    sheet = ss.insertSheet('Orders');
-    // Add headers
-    sheet.appendRow([
-      'Order ID',
-      'Date',
-      'Customer Name',
-      'Phone',
-      'Email',
-      'Address',
-      'Items',
-      'Total',
-      'Payment Method',
-      'Payment ID',
-      'Status'
-    ]);
+  console.log('=== addOrder START ===');
+  console.log('Timestamp:', new Date().toISOString());
+  console.log('Order ID:', orderData.orderId);
+  console.log('Customer:', orderData.customer.name);
+
+  try {
+    // Use hardcoded spreadsheet ID to ensure correct sheet
+    const ss = SpreadsheetApp.openById('1A4s3oVEamoZJxE-lDl9mDuT2iZhrQTueWu2VtrWwro8');
+    console.log('✅ Spreadsheet opened:', ss.getName());
+
+    let sheet = ss.getSheetByName('Orders');
+    console.log('Orders sheet exists?', sheet !== null);
+
+    // Create Orders sheet if it doesn't exist
+    if (!sheet) {
+      console.log('Creating new Orders sheet...');
+      sheet = ss.insertSheet('Orders');
+
+      // Add headers
+      sheet.appendRow([
+        'Order ID',
+        'Date',
+        'Customer Name',
+        'Phone',
+        'Email',
+        'Address',
+        'Items',
+        'Total',
+        'Payment Method',
+        'Payment ID',
+        'Status'
+      ]);
+      console.log('✅ Headers added to Orders sheet');
+    }
+
+    // Prepare order items string
+    console.log('Processing', orderData.items.length, 'items...');
+    const itemsStr = orderData.items.map(item =>
+      `${item.name} (${item.quantity}x₹${item.price})`
+    ).join(' | ');
+    console.log('Items string:', itemsStr);
+
+    // Create new row
+    const newRow = [
+      orderData.orderId,
+      new Date(orderData.timestamp),
+      orderData.customer.name,
+      orderData.customer.phone,
+      orderData.customer.email || '',
+      orderData.deliveryAddress,
+      itemsStr,
+      orderData.total,
+      orderData.paymentMethod,
+      orderData.paymentId || '',
+      orderData.status
+    ];
+    console.log('Row prepared with', newRow.length, 'columns');
+
+    // Append row to sheet
+    console.log('Appending row to sheet...');
+    sheet.appendRow(newRow);
+    console.log('✅ Row appended successfully!');
+
+    // Verify row was added
+    const lastRow = sheet.getLastRow();
+    console.log('Sheet now has', lastRow, 'rows (including header)');
+
+    console.log('=== addOrder SUCCESS ===');
+
+    return {
+      message: 'Order added successfully',
+      orderId: orderData.orderId,
+      rowNumber: lastRow
+    };
+
+  } catch (error) {
+    console.error('=== addOrder ERROR ===');
+    console.error('Error message:', error.message);
+    console.error('Error stack:', error.stack);
+    throw error; // Re-throw to be caught by doPost
   }
-  
-  // Prepare order items string
-  const itemsStr = orderData.items.map(item => 
-    `${item.name} (${item.quantity}x₹${item.price})`
-  ).join(' | ');
-  
-  // Create new row
-  const newRow = [
-    orderData.orderId,
-    new Date(orderData.timestamp),
-    orderData.customer.name,
-    orderData.customer.phone,
-    orderData.customer.email || '',
-    orderData.deliveryAddress,
-    itemsStr,
-    orderData.total,
-    orderData.paymentMethod,
-    orderData.paymentId || '',
-    orderData.status
-  ];
-  
-  // Append row to sheet
-  sheet.appendRow(newRow);
-  
-  Logger.log('Order added successfully - Order ID: ' + orderData.orderId);
-  
-  return {
-    message: 'Order added successfully',
-    orderId: orderData.orderId
-  };
 }
