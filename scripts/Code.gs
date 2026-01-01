@@ -41,6 +41,9 @@ function doPost(e) {
       case 'delete':
         result = deleteProduct(requestData.id);
         break;
+      case 'addOrder':
+        result = addOrder(requestData.data);
+        break;
       default:
         return createResponse(false, 'Invalid action: ' + action);
     }
@@ -244,4 +247,61 @@ function notifyClientsToRefresh() {
   // This is a placeholder - actual implementation would use
   // Cloud Messaging or WebSocket for real-time updates
   Logger.log('Products updated - clients should refresh cache');
+}
+
+/**
+ * Add a new order to the Orders sheet
+ */
+function addOrder(orderData) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName('Orders');
+  
+  // Create Orders sheet if it doesn't exist
+  if (!sheet) {
+    sheet = ss.insertSheet('Orders');
+    // Add headers
+    sheet.appendRow([
+      'Order ID',
+      'Date',
+      'Customer Name',
+      'Phone',
+      'Email',
+      'Address',
+      'Items',
+      'Total',
+      'Payment Method',
+      'Payment ID',
+      'Status'
+    ]);
+  }
+  
+  // Prepare order items string
+  const itemsStr = orderData.items.map(item => 
+    `${item.name} (${item.quantity}x₹${item.price})`
+  ).join(' | ');
+  
+  // Create new row
+  const newRow = [
+    orderData.orderId,
+    new Date(orderData.timestamp),
+    orderData.customer.name,
+    orderData.customer.phone,
+    orderData.customer.email || '',
+    orderData.deliveryAddress,
+    itemsStr,
+    orderData.total,
+    orderData.paymentMethod,
+    orderData.paymentId || '',
+    orderData.status
+  ];
+  
+  // Append row to sheet
+  sheet.appendRow(newRow);
+  
+  Logger.log('Order added successfully - Order ID: ' + orderData.orderId);
+  
+  return {
+    message: 'Order added successfully',
+    orderId: orderData.orderId
+  };
 }

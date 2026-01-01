@@ -20,3 +20,33 @@ const SHEETS_CONFIG = {
     // See docs/GOOGLE_SHEETS_APPS_SCRIPT.md for setup instructions
     appsScriptUrl: 'https://script.google.com/macros/s/AKfycbzy-c5y2lO1w-88kkuHSpUXegXDLLPTrG0rfP2ec6LtSKTkRdoj3SfYHuLZrdP8FtOu/exec'  // Example: 'https://script.google.com/macros/s/AKfycby.../exec'
 };
+
+// Razorpay Configuration
+const RAZORPAY_CONFIG = {
+    // Razorpay Key ID (public - safe to expose in frontend)
+    // Get from: https://dashboard.razorpay.com/app/keys
+    // Test Mode: rzp_test_xxxxx (for testing with test cards)
+    // Live Mode: rzp_live_xxxxx (after KYC approval)
+    keyId: '',  // Add your Razorpay Key ID here
+
+    // Business information (displayed in Razorpay checkout modal)
+    businessName: 'DevPooja',
+    businessLogo: 'https://coolcoder375.github.io/devpooja/images/logo.png',
+    businessDescription: 'Premium Pooja Items & Hindu Worship Essentials',
+
+    // Theme color for checkout modal
+    themeColor: '#F37254',
+
+    // Currency
+    currency: 'INR',
+
+    // WhatsApp business number for order confirmation
+    whatsappNumber: '',
+
+    // Feature flags
+    features: {
+        enableRazorpay: true,  // Set to false to disable Razorpay temporarily
+        enableWhatsAppCheckout: true,  // Keep WhatsApp option available
+        enableCOD: false  // Cash on Delivery (future feature)
+    }
+};
