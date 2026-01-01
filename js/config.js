@@ -41,7 +41,7 @@ const RAZORPAY_CONFIG = {
     currency: 'INR',
 
     // WhatsApp business number for order confirmation
-    whatsappNumber: '',
+    whatsappNumber: '919067615208',
 
     // Feature flags
     features: {
