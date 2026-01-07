@@ -15,7 +15,8 @@ const COLUMNS = {
   IMAGE: 4,       // Column E
   DESCRIPTION: 5, // Column F
   FEATURES: 6,    // Column G
-  QUANTITY: 7     // Column H
+  QUANTITY: 7,    // Column H
+  FEATURED: 8     // Column I
 };
 
 /**
@@ -106,7 +107,8 @@ function addProduct(productData) {
     productData.image,               // Image URL
     productData.description,         // Description
     featuresStr,                     // Features
-    productData.quantity || 0        // Quantity
+    productData.quantity || 0,       // Quantity
+    productData.featured || false    // Featured
   ];
 
   // Append row to sheet
@@ -161,7 +163,8 @@ function updateProduct(productId, productData) {
     productData.image,               // Image URL
     productData.description,         // Description
     featuresStr,                     // Features
-    productData.quantity || 0        // Quantity
+    productData.quantity || 0,       // Quantity
+    productData.featured || false    // Featured
   ];
 
   // Write updated data to the row

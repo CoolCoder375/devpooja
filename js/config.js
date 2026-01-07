@@ -13,7 +13,7 @@ const SHEETS_CONFIG = {
     spreadsheetId: '1A4s3oVEamoZJxE-lDl9mDuT2iZhrQTueWu2VtrWwro8',
 
     // Data range (Sheet name and columns)
-    range: 'Products!A2:H',
+    range: 'Products!A2:I',
 
     // Apps Script Web App URL (for writing products from admin panel)
     // IMPORTANT: Deploy your Apps Script first, then paste the URL here
