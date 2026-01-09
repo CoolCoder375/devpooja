@@ -420,9 +420,11 @@ function renderProductCard(product) {
 /**
  * Increment quantity for a product
  * @param {number} productId - Product ID
+ * @param {string} view - 'desktop' or 'mobile' (optional, defaults to desktop)
  */
-function incrementQty(productId) {
-    const input = document.getElementById(`qty-${productId}`);
+function incrementQty(productId, view = 'desktop') {
+    const inputId = view === 'mobile' ? `qty-mobile-${productId}` : `qty-${productId}`;
+    const input = document.getElementById(inputId);
     if (input) {
         const currentValue = parseInt(input.value) || 1;
         const maxValue = parseInt(input.max) || 999;
@@ -435,9 +437,11 @@ function incrementQty(productId) {
 /**
  * Decrement quantity for a product
  * @param {number} productId - Product ID
+ * @param {string} view - 'desktop' or 'mobile' (optional, defaults to desktop)
  */
-function decrementQty(productId) {
-    const input = document.getElementById(`qty-${productId}`);
+function decrementQty(productId, view = 'desktop') {
+    const inputId = view === 'mobile' ? `qty-mobile-${productId}` : `qty-${productId}`;
+    const input = document.getElementById(inputId);
     if (input) {
         const currentValue = parseInt(input.value) || 1;
         const minValue = parseInt(input.min) || 1;
@@ -450,9 +454,11 @@ function decrementQty(productId) {
 /**
  * Add to cart with selected quantity
  * @param {number} productId - Product ID
+ * @param {string} view - 'desktop' or 'mobile' (optional, defaults to desktop)
  */
-function addToCartWithQty(productId) {
-    const input = document.getElementById(`qty-${productId}`);
+function addToCartWithQty(productId, view = 'desktop') {
+    const inputId = view === 'mobile' ? `qty-mobile-${productId}` : `qty-${productId}`;
+    const input = document.getElementById(inputId);
     const quantity = input ? parseInt(input.value) || 1 : 1;
 
     // Call the updated addToCart function with quantity

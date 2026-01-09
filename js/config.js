@@ -9,7 +9,7 @@ const SHEETS_CONFIG = {
     // Your Google API Key (for reading products)
     apiKey: 'AIzaSyDfsTaZyVzk2uu3sQeEPFhSca0Wk3adJKY',
 
-    // Your Google Spreadsheet ID
+    // Your Google Spreadsheet ID, -----------DONOT COPY THIS-----------
     spreadsheetId: '11xDUwwaR9gNy1nplmuUW_jUVP0sT2p-Ls2uJn8WRg0I',
 
     // Data range (Sheet name and columns)
@@ -18,6 +18,7 @@ const SHEETS_CONFIG = {
     // Apps Script Web App URL (for writing products from admin panel)
     // IMPORTANT: Deploy your Apps Script first, then paste the URL here
     // See docs/GOOGLE_SHEETS_APPS_SCRIPT.md for setup instructions
+    // -----------DONOT COPY THIS-----------
     appsScriptUrl: 'https://script.google.com/macros/s/AKfycbzNmVmtmkjVvn5PdU83QDgZoOHi5djLMl0yyHWyxz1jzifobb_2VFfLfDlTZBsvtWRtfQ/exec'  // Example: 'https://script.google.com/macros/s/AKfycby.../exec'
 };
 
