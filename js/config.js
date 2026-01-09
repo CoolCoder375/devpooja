@@ -10,7 +10,7 @@ const SHEETS_CONFIG = {
     apiKey: 'AIzaSyDfsTaZyVzk2uu3sQeEPFhSca0Wk3adJKY',
 
     // Your Google Spreadsheet ID
-    spreadsheetId: '1A4s3oVEamoZJxE-lDl9mDuT2iZhrQTueWu2VtrWwro8',
+    spreadsheetId: '11xDUwwaR9gNy1nplmuUW_jUVP0sT2p-Ls2uJn8WRg0I',
 
     // Data range (Sheet name and columns)
     range: 'Products!A2:I',
@@ -18,7 +18,7 @@ const SHEETS_CONFIG = {
     // Apps Script Web App URL (for writing products from admin panel)
     // IMPORTANT: Deploy your Apps Script first, then paste the URL here
     // See docs/GOOGLE_SHEETS_APPS_SCRIPT.md for setup instructions
-    appsScriptUrl: 'https://script.google.com/macros/s/AKfycbzMQfNcBsOgLp4N4BP1NO7VpzaOf_7Skiv1vzN6MoY-NscT4SI9Ahr7ys_4yDU3fhLh/exec'  // Example: 'https://script.google.com/macros/s/AKfycby.../exec'
+    appsScriptUrl: 'https://script.google.com/macros/s/AKfycbzNmVmtmkjVvn5PdU83QDgZoOHi5djLMl0yyHWyxz1jzifobb_2VFfLfDlTZBsvtWRtfQ/exec'  // Example: 'https://script.google.com/macros/s/AKfycby.../exec'
 };
 
 // Razorpay Configuration
