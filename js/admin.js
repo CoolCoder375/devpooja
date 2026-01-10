@@ -658,7 +658,7 @@ function viewOrder(index) {
 
                 <div class="order-modal-footer">
                     <button class="btn-cancel" onclick="closeOrderModal()">Close</button>
-                    <a href="https://wa.me/${RAZORPAY_CONFIG?.whatsappNumber || '919067615208'}?text=Regarding order ${order.id}"
+                    <a href="https://wa.me/91${order.phone.replace(/^0+/, '')}?text=Hello ${order.customerName}, regarding your order ${order.id}"
                        target="_blank"
                        class="btn-save">
                         Contact Customer via WhatsApp
