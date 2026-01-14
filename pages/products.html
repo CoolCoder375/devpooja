@@ -193,12 +193,12 @@
                     // Desktop grid - horizontal card layout
                     productsContainer.innerHTML = productsToShow.map(product =>
                         `<div class="product-card-horizontal" data-category="${product.category}">
-                            <div class="product-image-horizontal">
+                            <div class="product-image-horizontal" style="cursor: pointer;" onclick="window.location.href='product-detail.html?id=${product.id}'">
                                 <img src="${product.image}" alt="${product.name}" loading="lazy">
                             </div>
                             <div class="product-content-horizontal">
                                 <div class="product-info-horizontal">
-                                    <h3>${product.name}</h3>
+                                    <h3 style="cursor: pointer;" onclick="window.location.href='product-detail.html?id=${product.id}'">${product.name}</h3>
                                     <p>${product.description}</p>
                                     <div class="product-price">₹${product.price}</div>
                                     <div class="product-features">
@@ -220,11 +220,11 @@
                     // Mobile grid - portrait cards
                     mobileProductsContainer.innerHTML = productsToShow.map(product =>
                         `<div class="mobile-product-card" data-category="${product.category}">
-                            <div class="mobile-product-image">
+                            <div class="mobile-product-image" style="cursor: pointer;" onclick="window.location.href='product-detail.html?id=${product.id}'">
                                 <img src="${product.image}" alt="${product.name}" loading="lazy">
                             </div>
                             <div class="mobile-product-info">
-                                <h3>${product.name}</h3>
+                                <h3 style="cursor: pointer;" onclick="window.location.href='product-detail.html?id=${product.id}'">${product.name}</h3>
                                 <p>${product.description}</p>
                                 <div class="product-price">₹${product.price}</div>
                                 <div class="product-actions">

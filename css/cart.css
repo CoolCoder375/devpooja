@@ -223,7 +223,7 @@
 .cart-item-price {
     color: var(--primary-green);
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1.1rem;  
 }
 
 /* Quantity Controls */

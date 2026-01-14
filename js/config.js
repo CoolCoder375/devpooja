@@ -13,7 +13,8 @@ const SHEETS_CONFIG = {
     spreadsheetId: '11xDUwwaR9gNy1nplmuUW_jUVP0sT2p-Ls2uJn8WRg0I',
 
     // Data range (Sheet name and columns)
-    range: 'Products!A2:I',
+    // A=ID, B=Name, C=Category, D=Price, E=Image, F=Description, G=Features, H=Quantity, I=Featured, J-M=Additional Images
+    range: 'Products!A2:M',
 
     // Apps Script Web App URL (for writing products from admin panel)
     // IMPORTANT: Deploy your Apps Script first, then paste the URL here
@@ -28,7 +29,7 @@ const RAZORPAY_CONFIG = {
     // Get from: https://dashboard.razorpay.com/app/keys
     // Test Mode: rzp_test_xxxxx (for testing with test cards)
     // Live Mode: rzp_live_xxxxx (after KYC approval)
-    keyId: '',  // Add your Razorpay Key ID here
+    keyId: 'rzp_test_S3gfDCKXmD4STn',  // Add your Razorpay Key ID here
 
     // Business information (displayed in Razorpay checkout modal)
     businessName: 'DevPooja',
@@ -50,4 +51,17 @@ const RAZORPAY_CONFIG = {
         enableWhatsAppCheckout: true,  // Keep WhatsApp option available
         enableCOD: false  // Cash on Delivery (future feature)
     }
+};
+
+// Google Analytics 4 Configuration
+const GA4_CONFIG = {
+    // Your GA4 Measurement ID
+    // Get this from: Google Analytics → Admin → Data Streams → Web → Measurement ID
+    measurementId: 'G-XXXXXXXXXX',  // Replace with your actual Measurement ID
+
+    // Enable/disable analytics
+    enabled: true,
+
+    // Debug mode (shows events in console)
+    debug: false
 };

@@ -121,7 +121,7 @@ function loadRecentOrders() {
         `;
     } else {
         // Show recent 5 orders in a table
-        const recentOrders = currentOrders.slice(0, 5);
+        const recentOrders = currentOrders.slice(-5).reverse();
         let html = `
             <table class="data-table">
                 <thead>
@@ -373,13 +373,28 @@ function loadProducts() {
             ? '<span class="status-badge status-paid">⭐ Featured</span>'
             : '<span class="status-badge status-pending">-</span>';
 
+        // Stock status indicator with quantity
+        const quantity = parseInt(product.quantity) || 0;
+        let stockDisplay = '';
+        let rowClass = '';
+
+        if (quantity === 0) {
+            stockDisplay = `<div><strong>${quantity}</strong> <span class="stock-indicator out-of-stock-admin">⛔ Out of Stock</span></div>`;
+            rowClass = 'row-out-of-stock';
+        } else if (quantity <= 5) {
+            stockDisplay = `<div><strong>${quantity}</strong> <span class="stock-indicator low-stock-admin">⚠️ Low Stock</span></div>`;
+            rowClass = 'row-low-stock';
+        } else {
+            stockDisplay = `<div><strong>${quantity}</strong> <span class="stock-indicator in-stock-admin">✅</span></div>`;
+        }
+
         html += `
-            <tr>
+            <tr class="${rowClass}">
                 <td><img src="${product.image}" class="product-image-thumb" alt="${product.name}" onerror="this.src='https://via.placeholder.com/50'"></td>
                 <td>${product.name}</td>
                 <td>${categoryName}</td>
                 <td>₹${product.price}</td>
-                <td>${product.quantity || 0}</td>
+                <td>${stockDisplay}</td>
                 <td>${featuredBadge}</td>
                 <td>
                     <div class="action-buttons">

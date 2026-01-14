@@ -1,0 +1,94 @@
+═══════════════════════════════════════════════════════════════
+                    🚀 QUICK DEPLOY GUIDE
+═══════════════════════════════════════════════════════════════
+
+━━━ STEP 1: BACKUP (2 minutes) ━━━
+
+cd /home/atharva/projects/MCOC/pooja
+cp -r . ../pooja_backup_$(date +%Y%m%d)
+
+━━━ STEP 2: COPY FILES (5 minutes) ━━━
+
+# Copy all at once:
+cd /home/atharva/projects/MCOC/pooja
+cp ../pooja_demo/devpooja/js/{products.js,admin.js,cart.js,analytics.js} ./js/
+cp ../pooja_demo/devpooja/{index.html} ./
+cp ../pooja_demo/devpooja/pages/{admin.html,products.html} ./pages/
+cp ../pooja_demo/devpooja/css/{common.css,admin.css} ./css/
+
+━━━ STEP 3: UPDATE CONFIG.JS (5 minutes) ━━━
+
+nano js/config.js
+
+Change line ~16:
+  range: 'Products!A2:I',   ← was A2:H
+
+Change line ~45:
+  whatsappNumber: '917057307300',   ← your number
+
+Add after line ~52:
+  // Google Analytics 4 Configuration
+  const GA4_CONFIG = {
+      measurementId: 'G-XXXXXXXXXX',  // Your GA4 ID
+      enabled: true,
+      debug: false
+  };
+
+━━━ STEP 4: UPDATE GOOGLE SHEETS (3 minutes) ━━━
+
+1. Open your main Google Sheet
+2. Add header in I1: featured
+3. Add TRUE/FALSE in column I for products
+
+━━━ STEP 5: UPDATE APPS SCRIPT (10 minutes) ━━━
+
+1. Open Google Sheet → Extensions → Apps Script
+2. Replace Code.gs with: scripts/Code.gs
+3. Save (Ctrl+S)
+4. Deploy → Manage deployments → Edit → New version
+5. Deploy
+
+━━━ STEP 6: TEST LOCALLY (10 minutes) ━━━
+
+Open index.html in browser:
+  ✓ Products load?
+  ✓ Quantity +/- works?
+  ✓ Cart works?
+  ✓ Admin panel works?
+  ✓ Featured checkbox shows?
+  ✓ Console has no errors?
+
+━━━ STEP 7: DEPLOY (5 minutes) ━━━
+
+git add .
+git commit -m "Add quantity selector, featured products, GA4, mobile fixes"
+git push origin main
+
+Wait 2-3 minutes → Test live site!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TOTAL TIME: ~40 minutes
+
+FILES COPIED: 11
+  ✅ 4 JS files
+  ✅ 3 HTML files
+  ✅ 2 CSS files
+  🆕 1 new JS file (analytics.js)
+  ⚠️  1 manual update (config.js)
+
+GOOGLE SHEETS: Add column I
+APPS SCRIPT: Update & redeploy
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❌ DON'T FORGET:
+  • Backup first!
+  • Update config.js manually
+  • Add column I to Google Sheets
+  • Redeploy Apps Script
+  • Test before pushing to GitHub
+
+📚 FULL GUIDE: DEPLOYMENT_CHECKLIST.md
+
+═══════════════════════════════════════════════════════════════

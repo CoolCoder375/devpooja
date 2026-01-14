@@ -19,7 +19,28 @@ class ShoppingCart {
 
     // Add item to cart
     addItem(product, quantity = 1) {
+        // Check if product is in stock
+        const availableQty = parseInt(product.quantity) || 0;
+
+        if (availableQty === 0) {
+            this.showNotification(`Sorry, ${product.name} is out of stock!`);
+            return;
+        }
+
         const existingItem = this.items.find(item => item.id === product.id);
+        const currentCartQty = existingItem ? existingItem.quantity : 0;
+        const totalRequestedQty = currentCartQty + quantity;
+
+        // Check if trying to add more than available
+        if (totalRequestedQty > availableQty) {
+            const remainingQty = availableQty - currentCartQty;
+            if (remainingQty > 0) {
+                this.showNotification(`Only ${remainingQty} more of ${product.name} available! (${availableQty} total in stock)`);
+            } else {
+                this.showNotification(`You already have the maximum available quantity of ${product.name} in your cart!`);
+            }
+            return;
+        }
 
         if (existingItem) {
             existingItem.quantity += quantity;
@@ -33,10 +54,21 @@ class ShoppingCart {
         this.saveCart();
         const qtyText = quantity > 1 ? ` (${quantity})` : '';
         this.showNotification(`${product.name}${qtyText} added to cart!`);
+
+        // Track add to cart event in GA4
+        if (typeof Analytics !== 'undefined') {
+            Analytics.trackAddToCart(product, quantity);
+        }
     }
 
     // Remove item from cart
     removeItem(productId) {
+        // Track remove from cart before removing
+        const removedItem = this.items.find(item => item.id === productId);
+        if (removedItem && typeof Analytics !== 'undefined') {
+            Analytics.trackRemoveFromCart(removedItem, removedItem.quantity);
+        }
+
         this.items = this.items.filter(item => item.id !== productId);
         this.saveCart();
     }
@@ -478,6 +510,12 @@ class ShoppingCart {
 
     // Pay with WhatsApp (Cash on Delivery)
     payWithWhatsApp() {
+        // Track WhatsApp checkout in GA4
+        if (typeof Analytics !== 'undefined') {
+            Analytics.trackBeginCheckout(this.items, this.getTotal());
+            Analytics.trackWhatsAppCheckout(this.getTotal(), this.getItemCount());
+        }
+
         this.closePaymentModal();
         this.sendWhatsAppOrderConfirmation();
 

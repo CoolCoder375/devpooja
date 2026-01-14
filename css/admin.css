@@ -745,3 +745,58 @@ body {
         background: linear-gradient(90deg, transparent, #f8f9fa 20%, #f8f9fa 80%, transparent);
     }
 }
+
+/* ==========================================
+   INVENTORY MANAGEMENT STYLES
+   ========================================== */
+
+/* Stock indicators in product table */
+.stock-indicator {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+.stock-indicator.out-of-stock-admin {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.stock-indicator.low-stock-admin {
+    background-color: #fff3e0;
+    color: #e65100;
+    animation: pulse-warning 2s infinite;
+}
+
+.stock-indicator.in-stock-admin {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+/* Row highlighting for stock status */
+.data-table tr.row-out-of-stock {
+    background-color: #ffebee !important;
+}
+
+.data-table tr.row-low-stock {
+    background-color: #fff8e1 !important;
+}
+
+.data-table tr.row-out-of-stock:hover,
+.data-table tr.row-low-stock:hover {
+    opacity: 0.9;
+}
+
+/* Pulse animation for low stock warning */
+@keyframes pulse-warning {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
