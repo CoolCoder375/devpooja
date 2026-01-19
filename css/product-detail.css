@@ -8,6 +8,11 @@ body.product-detail-page {
 /* ==========================================
    LAYOUT
    ========================================== */
+.title-grid{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
 
 .product-detail-section {
     min-height: 80vh;
@@ -130,12 +135,11 @@ body.product-detail-page {
     align-items: center;
     justify-content: center;
     height: 500px;
-    background: #f5f2ed;
+    background: #fff;
 }
 
 .product-images-main .swiper-slide img {
     max-width: 100%;
-    max-height: 100%;
     object-fit: contain;
 }
 
@@ -233,14 +237,11 @@ body.product-detail-page {
     line-height: 1.3;
 }
 
-.product-category {
-    margin-top: -10px;
-}
 
 .category-badge {
     display: inline-block;
-    padding: 6px 16px;
-    background: linear-gradient(135deg, var(--primary-cyan), var(--primary-orange));
+    padding: 6px;
+    background: linear-gradient(135deg, var(--primary-cyan), var(--primary-green));
     color: white;
     border-radius: 20px;
     font-size: 13px;
@@ -259,9 +260,9 @@ body.product-detail-page {
 }
 
 .price-amount {
-    font-size: 36px;
+    font-size: 2rem;
     font-weight: 700;
-    color: var(--primary-orange);
+    color: var(--primary-green);
 }
 
 .product-description h3,
@@ -278,14 +279,16 @@ body.product-detail-page {
 }
 
 .features-list {
+    display: flex;
+    gap:1rem;
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
 .features-list li {
-    padding: 8px 0;
-    padding-left: 25px;
+    padding: 5px 0;
+    padding-left: 16px;
     position: relative;
     color: #555;
 }
@@ -407,7 +410,6 @@ body.product-detail-page {
 
 .related-products-section .product-card .product-image {
     height: 200px;
-    background: #f5f2ed;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -416,7 +418,6 @@ body.product-detail-page {
 
 .related-products-section .product-card .product-image img {
     width: 100%;
-    height: 100%;
     object-fit: contain;
 }
 
@@ -448,7 +449,7 @@ body.product-detail-page {
 .btn-view-details {
     width: 100%;
     padding: 10px;
-    background: linear-gradient(135deg, var(--primary-cyan), var(--primary-orange));
+    background: linear-gradient(135deg, var(--primary-cyan), var(--primary-green));
     color: white;
     border: none;
     border-radius: 8px;
@@ -469,6 +470,10 @@ body.product-detail-page {
    ========================================== */
 
 @media (max-width: 768px) {
+    .product-detail-section .container {
+        margin-top: 120px;
+    }
+
     .product-detail-container {
         grid-template-columns: 1fr;
         gap: 30px;
