@@ -631,7 +631,9 @@ main {
         color: var(--primary-cyan);
     }
 }
-
+#reviews > div > div.EmbedRoot__Root-sc-2cafecf5-0.fyEOvc.es-embed-root.eapps-google-reviews-24f62ec8-e878-4b17-b040-2bf6cf343fd8-custom-css-root > div > div > div > div.WidgetBackground__Content-sc-386b5057-2.cMTovS.es-widget-background-content.WidgetBackground__ContentContainer-sc > a{
+    display: none!important;
+}
 /* Mobile Responsive */
 @media (max-width: 768px) {
     .hero-title {
