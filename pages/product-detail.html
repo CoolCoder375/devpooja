@@ -18,6 +18,8 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/theme-mangal.css">
 </head>
 <body class="product-detail-page">
     <!-- Navigation -->
@@ -109,6 +111,14 @@
                     <div class="product-price-detail">
                         <span class="price-label">Price:</span>
                         <span class="price-amount" id="productPrice"></span>
+                    </div>
+
+                    <!-- Variant Selector (shown only for products with variants) -->
+                    <div class="product-variants" id="variantSelector" style="display: none;">
+                        <h3>Select Size</h3>
+                        <div class="variant-options" id="variantOptions">
+                            <!-- Variant buttons will be inserted here -->
+                        </div>
                     </div>
 
                     <!-- Description -->

@@ -302,6 +302,72 @@ body.product-detail-page {
 }
 
 /* ==========================================
+   VARIANT SELECTOR
+   ========================================== */
+
+.product-variants {
+    margin: 20px 0;
+    padding: 15px 0;
+    border-top: 1px solid #eee;
+}
+
+.product-variants h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.variant-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.variant-btn {
+    padding: 10px 20px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background: white;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.variant-btn:hover:not(.out-of-stock) {
+    border-color: var(--primary-cyan);
+    background: #f0fafa;
+}
+
+.variant-btn.active {
+    border-color: var(--primary-cyan);
+    background: var(--primary-cyan);
+    color: white;
+}
+
+.variant-btn.out-of-stock {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: #f5f5f5;
+    border-style: dashed;
+}
+
+.variant-btn.out-of-stock:hover {
+    border-color: #ddd;
+    background: #f5f5f5;
+}
+
+.variant-oos {
+    display: block;
+    font-size: 10px;
+    color: #c62828;
+    margin-top: 2px;
+}
+
+/* ==========================================
    QUANTITY & ADD TO CART
    ========================================== */
 

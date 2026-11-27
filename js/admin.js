@@ -268,7 +268,20 @@ function showProductForm() {
         document.getElementById(`productImage${i}Url`).value = '';
     }
 
+    // Reset variant fields
+    document.getElementById('hasVariants').checked = false;
+    document.getElementById('variantGroup').value = '';
+    document.getElementById('variantLabel').value = '';
+    document.getElementById('variantFields').style.display = 'none';
+
     editingProductId = null;
+}
+
+// Toggle variant fields visibility
+function toggleVariantFields() {
+    const hasVariants = document.getElementById('hasVariants').checked;
+    const variantFields = document.getElementById('variantFields');
+    variantFields.style.display = hasVariants ? 'flex' : 'none';
 }
 
 function hideProductForm() {
@@ -405,6 +418,20 @@ async function saveProduct(event) {
             image5 = await uploadImageToImgBB(image5File);
         }
 
+        // Get variant data if enabled
+        const hasVariants = document.getElementById('hasVariants').checked;
+        const variantGroup = hasVariants ? document.getElementById('variantGroup').value.trim() : '';
+        const variantLabel = hasVariants ? document.getElementById('variantLabel').value.trim() : '';
+
+        // Validate variant fields if enabled
+        if (hasVariants && (!variantGroup || !variantLabel)) {
+            alert('Please fill in both Variant Group ID and Variant Label');
+            saveBtn.classList.remove('loading');
+            saveBtn.disabled = false;
+            btnText.textContent = 'Save Product';
+            return;
+        }
+
         // Create product object
         const productData = {
             name,
@@ -418,7 +445,9 @@ async function saveProduct(event) {
             image2: image2 || '',
             image3: image3 || '',
             image4: image4 || '',
-            image5: image5 || ''
+            image5: image5 || '',
+            variant_group: variantGroup,
+            variant_label: variantLabel
         };
 
         btnText.textContent = 'Saving to Google Sheets...';
@@ -584,6 +613,19 @@ function editProduct(id) {
     if (product.image) {
         document.getElementById('previewImg').src = product.image;
         document.getElementById('imagePreview').style.display = 'block';
+    }
+
+    // Populate variant fields
+    if (product.variant_group) {
+        document.getElementById('hasVariants').checked = true;
+        document.getElementById('variantGroup').value = product.variant_group;
+        document.getElementById('variantLabel').value = product.variant_label || '';
+        document.getElementById('variantFields').style.display = 'flex';
+    } else {
+        document.getElementById('hasVariants').checked = false;
+        document.getElementById('variantGroup').value = '';
+        document.getElementById('variantLabel').value = '';
+        document.getElementById('variantFields').style.display = 'none';
     }
 
     // Scroll to form

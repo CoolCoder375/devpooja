@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+  <g fill="none" transform="translate(60,60)">
+    <ellipse rx="10" ry="28" stroke="rgba(255,215,0,0.13)" stroke-width="0.9"/>
+    <ellipse rx="10" ry="28" stroke="rgba(255,215,0,0.13)" stroke-width="0.9" transform="rotate(45)"/>
+    <ellipse rx="10" ry="28" stroke="rgba(255,215,0,0.13)" stroke-width="0.9" transform="rotate(90)"/>
+    <ellipse rx="10" ry="28" stroke="rgba(255,215,0,0.13)" stroke-width="0.9" transform="rotate(135)"/>
+    <circle r="18" stroke="rgba(255,215,0,0.10)" stroke-width="0.7"/>
+    <circle r="32" stroke="rgba(255,215,0,0.10)" stroke-width="0.7"/>
+    <circle r="48" stroke="rgba(255,215,0,0.07)" stroke-width="0.7"/>
+    <circle cx="32" cy="0" r="1.8" fill="rgba(255,215,0,0.16)"/>
+    <circle cx="22.6" cy="22.6" r="1.8" fill="rgba(255,215,0,0.16)"/>
+    <circle cx="0" cy="32" r="1.8" fill="rgba(255,215,0,0.16)"/>
+    <circle cx="-22.6" cy="22.6" r="1.8" fill="rgba(255,215,0,0.16)"/>
+    <circle cx="-32" cy="0" r="1.8" fill="rgba(255,215,0,0.16)"/>
+    <circle cx="-22.6" cy="-22.6" r="1.8" fill="rgba(255,215,0,0.16)"/>
+    <circle cx="0" cy="-32" r="1.8" fill="rgba(255,215,0,0.16)"/>
+    <circle cx="22.6" cy="-22.6" r="1.8" fill="rgba(255,215,0,0.16)"/>
+    <circle r="5" fill="rgba(255,215,0,0.18)"/>
+    <circle r="8" stroke="rgba(255,215,0,0.12)" stroke-width="0.7" fill="none"/>
+  </g>
+</svg>

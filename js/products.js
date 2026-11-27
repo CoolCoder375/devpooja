@@ -106,7 +106,7 @@ function extractCategories(productsData) {
  * @returns {Array} Array of product objects
  */
 function parseSheetData(response) {
-    const headers = ['id', 'name', 'category', 'price', 'image', 'description', 'features', 'quantity', 'featured', 'image2', 'image3', 'image4', 'image5'];
+    const headers = ['id', 'name', 'category', 'price', 'image', 'description', 'features', 'quantity', 'featured', 'image2', 'image3', 'image4', 'image5', 'variant_group', 'variant_label'];
 
     return response.values.map((row, index) => {
         const product = {};
@@ -138,6 +138,10 @@ function parseSheetData(response) {
                     case 'image5':
                         value = ''; // Optional additional images
                         break;
+                    case 'variant_group':
+                    case 'variant_label':
+                        value = ''; // Optional variant fields
+                        break;
                     default:
                         value = '';
                 }
@@ -166,6 +170,41 @@ function parseSheetData(response) {
 
         return product;
     });
+}
+
+/**
+ * Get unique products (one per variant group) for listing pages
+ * @param {Array} productsArray - Array of all products
+ * @returns {Array} Array with one product per variant group
+ */
+function getUniqueProducts(productsArray) {
+    const seenGroups = new Set();
+    const uniqueProducts = [];
+
+    for (const product of productsArray) {
+        if (product.variant_group) {
+            // Has variant group - only add first occurrence
+            if (!seenGroups.has(product.variant_group)) {
+                seenGroups.add(product.variant_group);
+                uniqueProducts.push(product);
+            }
+        } else {
+            // No variant group - always add (standalone product)
+            uniqueProducts.push(product);
+        }
+    }
+
+    return uniqueProducts;
+}
+
+/**
+ * Get all variants for a specific variant group
+ * @param {string} variantGroup - The variant group ID
+ * @returns {Array} Array of all products in that variant group
+ */
+function getProductVariants(variantGroup) {
+    if (!variantGroup) return [];
+    return products.filter(p => p.variant_group === variantGroup);
 }
 
 /**
