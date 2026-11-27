@@ -136,6 +136,27 @@
                             </div>
                         </div>
 
+                        <!-- Variant Options -->
+                        <div class="form-row variant-section">
+                            <div class="form-field" style="display: flex; align-items: center; gap: 10px;">
+                                <input type="checkbox" id="hasVariants" style="width: auto; margin: 0;" onchange="toggleVariantFields()">
+                                <label for="hasVariants" style="margin: 0; cursor: pointer;">This product has variants (e.g., 250g, 500g)</label>
+                            </div>
+                        </div>
+
+                        <div class="form-row variant-fields" id="variantFields" style="display: none;">
+                            <div class="form-field">
+                                <label>Variant Group ID *</label>
+                                <input type="text" id="variantGroup" placeholder="e.g., sandalwood-incense">
+                                <p style="font-size: 11px; color: #666; margin-top: 4px;">Use same ID for all variants of this product</p>
+                            </div>
+                            <div class="form-field">
+                                <label>Variant Label *</label>
+                                <input type="text" id="variantLabel" placeholder="e.g., 250g, 500g, Large, Small">
+                                <p style="font-size: 11px; color: #666; margin-top: 4px;">What makes this variant different</p>
+                            </div>
+                        </div>
+
                         <div class="form-row">
                             <div class="form-field">
                                 <label>Description *</label>

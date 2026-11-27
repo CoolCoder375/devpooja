@@ -13,8 +13,8 @@ const SHEETS_CONFIG = {
     spreadsheetId: '11xDUwwaR9gNy1nplmuUW_jUVP0sT2p-Ls2uJn8WRg0I',
 
     // Data range (Sheet name and columns)
-    // A=ID, B=Name, C=Category, D=Price, E=Image, F=Description, G=Features, H=Quantity, I=Featured, J-M=Additional Images
-    range: 'Products!A2:M',
+    // A=ID, B=Name, C=Category, D=Price, E=Image, F=Description, G=Features, H=Quantity, I=Featured, J-M=Additional Images, N=Variant Group, O=Variant Label
+    range: 'Products!A2:O',
 
     // Apps Script Web App URL (for writing products from admin panel)
     // IMPORTANT: Deploy your Apps Script first, then paste the URL here

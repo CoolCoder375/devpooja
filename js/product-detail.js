@@ -54,6 +54,9 @@ function loadProductDetail(productId) {
     // Initialize quantity controls
     initializeQuantityControls(product);
 
+    // Initialize variant selector (if product has variants)
+    initializeVariantSelector(product);
+
     // Show related products
     loadRelatedProducts(product);
 
@@ -70,6 +73,72 @@ function loadProductDetail(productId) {
             }]
         });
     }
+}
+
+// Initialize variant selector
+function initializeVariantSelector(product) {
+    const variantSelector = document.getElementById('variantSelector');
+    const variantOptions = document.getElementById('variantOptions');
+
+    // Check if product has variants
+    if (!product.variant_group) {
+        variantSelector.style.display = 'none';
+        return;
+    }
+
+    // Get all variants for this product group
+    const variants = getProductVariants(product.variant_group);
+
+    if (variants.length <= 1) {
+        variantSelector.style.display = 'none';
+        return;
+    }
+
+    // Show variant selector
+    variantSelector.style.display = 'block';
+
+    // Render variant buttons
+    variantOptions.innerHTML = variants.map(variant => {
+        const isActive = variant.id === product.id;
+        const isOutOfStock = parseInt(variant.quantity) === 0;
+
+        return `
+            <button class="variant-btn ${isActive ? 'active' : ''} ${isOutOfStock ? 'out-of-stock' : ''}"
+                    data-product-id="${variant.id}"
+                    onclick="selectVariant(${variant.id})"
+                    ${isOutOfStock ? 'title="Out of Stock"' : ''}>
+                ${variant.variant_label}
+                ${isOutOfStock ? '<span class="variant-oos">(Out of Stock)</span>' : ''}
+            </button>
+        `;
+    }).join('');
+}
+
+// Handle variant selection
+function selectVariant(productId) {
+    const newProduct = products.find(p => p.id === productId);
+
+    if (!newProduct) return;
+
+    // Update URL without reloading page
+    const newUrl = `product-detail.html?id=${productId}`;
+    window.history.pushState({ productId }, '', newUrl);
+
+    // Update current product
+    currentProduct = newProduct;
+
+    // Update all product details
+    populateProductDetails(newProduct);
+    initializeImageGallery(newProduct);
+    initializeQuantityControls(newProduct);
+
+    // Update variant selector active state
+    document.querySelectorAll('.variant-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (parseInt(btn.dataset.productId) === productId) {
+            btn.classList.add('active');
+        }
+    });
 }
 
 // Populate product details

@@ -1,0 +1,196 @@
+/* ==========================================================================
+   Mangal Toran — shared theme layer for inner pages
+   Load LAST (after common.css, the page css and cart.css).
+   Re-maps the old cyan/green tokens to temple gold & kumkum, and re-skins
+   header, footer, buttons, cards and cart with pooja cues (toran, kolam).
+   ========================================================================== */
+
+:root {
+    /* old tokens, re-mapped */
+    --primary-cyan: #9E1B1F;          /* kumkum (links, borders, accents) */
+    --primary-green: #D4A72C;         /* temple gold */
+    --primary-orange: #E2681A;        /* saffron */
+    --accent-color: #2E7D4F;          /* tulsi green */
+    --text-dark: #2A1A05;
+    --bg-cream: #FFF9EE;
+    --gradient-primary: linear-gradient(135deg, #B8131F, #E2681A);
+    --gradient-subtle: linear-gradient(135deg, rgba(212, 167, 44, .35), rgba(226, 104, 26, .25));
+
+    /* Mangal Toran tokens */
+    --mt-ink: #2A1A05;
+    --mt-ink-soft: #4A3618;
+    --mt-muted: #6B5535;
+    --mt-cream: #FFF9EE;
+    --mt-cream-2: #FFF1CF;
+    --mt-gold: #D4A72C;
+    --mt-gold-soft: #FFE39A;
+    --mt-kumkum: #9E1B1F;
+    --mt-leaf: #2E7D4F;
+    --mt-display: 'Cinzel', 'Crimson Text', serif;
+    --mt-body: 'Nunito', system-ui, sans-serif;
+}
+
+body {
+    font-family: var(--mt-body);
+    color: var(--mt-ink);
+    background: var(--mt-cream);
+}
+
+h1, h2, .section-title, .page-title, .product-title {
+    font-family: var(--mt-display);
+}
+
+/* ---------- Header: cream bar with a marigold toran hanging below ---------- */
+.header {
+    background: rgba(255, 249, 238, .98);
+    border-bottom: 2px solid var(--mt-gold);
+    box-shadow: 0 2px 16px rgba(42, 26, 5, .08);
+}
+.header::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    height: 20px;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 10px 8px, #F7A21B 7px, transparent 7.5px) 0 0 / 20px 16px repeat-x,
+        radial-gradient(circle at 10px 8px, #E8560F 7px, transparent 7.5px) 10px 0 / 20px 16px repeat-x,
+        conic-gradient(from 135deg at 50% 0, #2E7D4F 90deg, transparent 0) 0 14px / 40px 6px repeat-x;
+}
+.nav-link { color: var(--mt-ink); font-weight: 700; }
+.nav-link:hover, .nav-link.active { color: var(--mt-kumkum); }
+.nav-link::after { background: var(--mt-gold); }
+.bar { background: var(--mt-ink); }
+@media (max-width: 768px) {
+    .nav-menu { background: rgba(255, 249, 238, .99); border-bottom: 2px solid var(--mt-gold); }
+}
+
+/* ---------- Buttons ---------- */
+.btn { border-radius: 999px; font-family: var(--mt-body); font-weight: 800; }
+.btn-primary {
+    background: var(--mt-gold);
+    color: var(--mt-ink);
+    border: 2px solid var(--mt-ink);
+    box-shadow: none;
+}
+.btn-primary:hover {
+    background: #C3961F;
+    color: var(--mt-ink);
+    box-shadow: 0 4px 0 var(--mt-ink);
+}
+.btn-secondary { color: var(--mt-ink); border: 2px solid var(--mt-ink); }
+.btn-secondary:hover { border-color: var(--mt-ink); color: var(--mt-ink); background: var(--mt-cream-2); }
+
+/* ---------- Page headers: kumkum kolam band ---------- */
+.page-header {
+    position: relative;
+    background:
+        radial-gradient(circle, rgba(255, 227, 154, .55) 2.5px, transparent 3px) 0 0 / 36.77px 36.77px,
+        repeating-linear-gradient(45deg, rgba(255, 227, 154, .14) 0 2px, transparent 2px 26px),
+        repeating-linear-gradient(-45deg, rgba(255, 227, 154, .14) 0 2px, transparent 2px 26px),
+        var(--mt-kumkum);
+}
+.page-title { color: #fff; }
+.page-subtitle { color: var(--mt-gold-soft); opacity: 1; }
+
+/* ---------- Section titles: gold rule ---------- */
+.section-title { color: var(--mt-ink); }
+.section-title::after {
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--mt-gold), transparent);
+}
+
+/* ---------- Product cards (listing, related, swipers) ---------- */
+.product-card,
+.desktop-product-card,
+.product-card-horizontal {
+    background: #fff;
+    border: 2px solid var(--mt-ink) !important;
+    border-radius: 22px !important;
+    box-shadow: 0 6px 0 rgba(42, 26, 5, .12) !important;
+    overflow: hidden;
+}
+.product-card:hover,
+.desktop-product-card:hover {
+    box-shadow: 0 9px 0 rgba(42, 26, 5, .16) !important;
+}
+.product-price, .price-amount, .product-price-detail { color: var(--mt-kumkum); }
+.btn-add-cart, .btn-add-cart-detail {
+    background: var(--mt-gold) !important;
+    color: var(--mt-ink) !important;
+    border: none;
+    border-radius: 12px !important;
+    font-weight: 800;
+    letter-spacing: .04em;
+}
+.btn-add-cart:hover, .btn-add-cart-detail:hover { background: #C3961F !important; }
+.btn-add-cart[disabled] { background: #E6DFD0 !important; color: #6B5F4A !important; }
+
+.quantity-selector { border-color: var(--mt-ink); border-radius: 12px; }
+.qty-btn { background: var(--mt-cream-2); color: var(--mt-ink); }
+
+/* filter chips */
+.filter-btn {
+    border-radius: 999px;
+    border: 2px solid var(--mt-ink);
+    color: var(--mt-ink);
+    font-family: var(--mt-body);
+    font-weight: 700;
+}
+.filter-btn.active,
+.filter-btn:hover {
+    background: var(--mt-ink) !important;
+    color: var(--mt-gold-soft) !important;
+    border-color: var(--mt-ink) !important;
+    box-shadow: none !important;
+}
+
+/* ---------- Footer: dark ink with gold headings ---------- */
+.footer {
+    position: relative;
+    background: var(--mt-ink);
+    color: #E9DDC4;
+    margin-top: 46px;
+}
+.footer::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: 46px;
+    transform: scaleY(-1);
+    background:
+        radial-gradient(circle at 14px 12px, #F7A21B 10px, transparent 11px) 0 0 / 28px 24px repeat-x,
+        radial-gradient(circle at 14px 12px, #E8560F 10px, transparent 11px) 14px 0 / 28px 24px repeat-x,
+        conic-gradient(from 135deg at 50% 0, #2E7D4F 90deg, transparent 0) 0 22px / 56px 24px repeat-x;
+}
+.footer-section h4, .footer-social h4 { color: var(--mt-gold-soft); }
+.footer-section ul li a { color: #E9DDC4; }
+.footer-section ul li a:hover { color: var(--mt-gold-soft); }
+.footer-logo { background: var(--mt-cream); border-radius: 50%; padding: 6px; height: 72px; }
+.footer-bottom, .footer-social { border-top-color: rgba(233, 221, 196, .2); color: #BFAF8E; }
+.social-icon:hover { background: var(--mt-gold); color: var(--mt-ink); box-shadow: none; }
+
+/* ---------- Cart ---------- */
+.cart-float-btn {
+    background: var(--mt-gold);
+    border: 2px solid var(--mt-ink);
+    box-shadow: 0 6px 18px rgba(42, 26, 5, .25);
+}
+.cart-badge { background: #B8131F; }
+.cart-header { background: var(--mt-ink); color: var(--mt-gold-soft); }
+.cart-header h3 { color: var(--mt-gold-soft); font-family: var(--mt-display); }
+.cart-close-btn { color: var(--mt-gold-soft); }
+.cart-total-amount { color: var(--mt-kumkum); }
+.cart-checkout-btn { background: var(--mt-gold) !important; color: var(--mt-ink) !important; }
+.cart-notification { background: var(--mt-ink); color: var(--mt-gold-soft); }
+
+/* ---------- Forms ---------- */
+input:focus, select:focus, textarea:focus {
+    outline-color: var(--mt-gold);
+    border-color: var(--mt-ink);
+}

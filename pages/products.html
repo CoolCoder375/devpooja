@@ -14,6 +14,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="../images/logo.png">
 
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/theme-mangal.css">
 </head>
 <body>
     <header class="header">
@@ -207,14 +209,29 @@
                 });
             });
 
+            // Deep link: products.html?category=incense pre-selects that filter
+            const requestedCategory = new URLSearchParams(window.location.search).get('category');
+            if (requestedCategory) {
+                const sel = '.filter-btn[data-category="' + CSS.escape(requestedCategory) + '"]';
+                const desktopBtn = document.querySelector('.desktop-filter-buttons ' + sel);
+                const mobileBtn = document.querySelector('.mobile-filter-buttons ' + sel);
+                if (desktopBtn) desktopBtn.click();
+                if (mobileBtn) mobileBtn.click();
+            }
+
             function loadProducts(category) {
                 currentCategory = category;
 
+                // Get unique products (one per variant group)
+                let filteredProducts;
                 if (category === 'all') {
-                    allProductsToShow = products;
+                    filteredProducts = products;
                 } else {
-                    allProductsToShow = getProductsByCategory(category);
+                    filteredProducts = getProductsByCategory(category);
                 }
+
+                // Filter to show only one product per variant group
+                allProductsToShow = getUniqueProducts(filteredProducts);
 
                 renderProductsPage();
                 renderPagination();
